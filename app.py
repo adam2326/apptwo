@@ -31,5 +31,23 @@ def third():
 		return render_template('main_page.html')
 
 
+
+########################################################
+# Shutting down flask server
+########################################################
+def shutdown_server():
+    func = request.environ.get('werkzeug.server.shutdown')
+    if func is None:
+        raise RuntimeError('Not running with the Werkzeug Server')
+    func()
+
+
+@myapp.route('/shutdown', methods=['POST'])
+def shutdown():
+    shutdown_server()
+    return 'Server shutting down...'
+
+# run the app
 if __name__ == '__main__':
-	myapp.run(threaded=True)
+	myapp.run(host='0.0.0.0')
+
